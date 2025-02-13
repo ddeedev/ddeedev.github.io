@@ -21,6 +21,7 @@
         console.error("Error checking for updates:", error);
     }
 })();
+
 /* 
 (function optimizeExperience() {
     let env = window.location.hostname;
@@ -53,6 +54,7 @@
     }
 })();
 */
+
 const messages = [
     "Are you sure?",
     "Really sure??",
@@ -68,6 +70,17 @@ const messages = [
 
 let messageIndex = 0;
 
+async function countApiHit(pathname) {
+    try {
+        const response = await fetch(`https://api.countapi.xyz/hit/ddeedev.github.io/${pathname}`);
+        if (!response.ok) {
+            console.warn("Could not update count.");
+        }
+    } catch (error) {
+        console.error("Error updating count:", error);
+    }
+}
+
 function handleNoClick() {
     const noButton = document.querySelector('.no-button');
     const yesButton = document.querySelector('.yes-button');
@@ -75,8 +88,17 @@ function handleNoClick() {
     messageIndex = (messageIndex + 1) % messages.length;
     const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
     yesButton.style.fontSize = `${currentSize * 1.5}px`;
+
+    // Count API hit for NO button
+    countApiHit('no_click');
 }
 
 function handleYesClick() {
+    // Count API hit for YES button
+    countApiHit('yes_click');
+
     window.location.href = "yes_page.html";
 }
+
+document.querySelector('.no-button').addEventListener('click', handleNoClick);
+document.querySelector('.yes-button').addEventListener('click', handleYesClick);
