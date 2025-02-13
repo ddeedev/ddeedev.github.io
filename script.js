@@ -72,7 +72,8 @@ let messageIndex = 0;
 
 async function countApiHit(pathname) {
     try {
-        const response = await fetch(`https://api.countapi.xyz/hit/ddeedev.github.io/${pathname}`);
+        const response = await fetch(`https://api.counterapi.dev/v1/ddeedev.github.io/${pathname}/up`);
+
         if (!response.ok) {
             console.warn("Could not update count.");
         }
